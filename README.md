@@ -1,17 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Northloom storefront
 
-## Getting Started
+Front end for a clothing store. Mobile-first, static data, no backend.
 
-First, run the development server:
+## Pages
+
+- `/` - home: hero with counters, New Arrivals and Top Selling rows, dress-style grid, reviews
+- `/shop` - product grid with a filter sidebar (drawer on mobile)
+- `/shop/product/[id]/[slug]` - gallery, colour and size picker, quantity, details/reviews/FAQ tabs
+- `/cart` - line items and order summary, kept in localStorage
+
+## Dev
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Runs on http://localhost:3000. Node 18.17+. No env vars.
+
+Stack: Next.js 14 (App Router), Tailwind, Redux Toolkit + redux-persist for the cart, Framer Motion.
