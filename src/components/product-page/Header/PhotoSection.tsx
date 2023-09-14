@@ -22,7 +22,7 @@ const PhotoSection = ({ data }: { data: Product }) => {
                 src={photo}
                 width={152}
                 height={167}
-                className="rounded-md w-full h-full object-cover hover:scale-110 transition-all duration-500"
+                className="rounded-md w-full h-full object-cover object-top hover:scale-110 transition-all duration-500"
                 alt={data.title}
                 priority
               />
@@ -36,7 +36,7 @@ const PhotoSection = ({ data }: { data: Product }) => {
           src={selected}
           width={444}
           height={530}
-          className="rounded-md w-full h-full object-cover hover:scale-110 transition-all duration-500"
+          className="rounded-md w-full h-full min-h-[330px] lg:min-h-[380px] xl:min-h-[530px] object-cover object-top hover:scale-110 transition-all duration-500"
           alt={data.title}
           priority
           unoptimized

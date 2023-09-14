@@ -1,14 +1,15 @@
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
+// redux-persist needs a storage object during SSR, where localStorage is unavailable
 const createNoopStorage = () => {
   return {
-    getItem(_key: any) {
+    getItem(_key: string) {
       return Promise.resolve(null);
     },
-    setItem(_key: any, value: any) {
+    setItem(_key: string, value: string) {
       return Promise.resolve(value);
     },
-    removeItem(_key: any) {
+    removeItem(_key: string) {
       return Promise.resolve();
     },
   };

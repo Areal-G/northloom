@@ -1,21 +1,11 @@
 import { compareArrays } from "@/lib/utils";
+import { getDiscountedPrice } from "@/lib/pricing";
 import { Discount } from "@/types/product.types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-const calcAdjustedTotalPrice = (
-  totalPrice: number,
-  data: CartItem,
-  quantity?: number
-): number => {
-  return (
-    (totalPrice + data.discount.percentage > 0
-      ? Math.round(data.price - (data.price * data.discount.percentage) / 100)
-      : data.discount.amount > 0
-      ? Math.round(data.price - data.discount.amount)
-      : data.price) * (quantity ? quantity : data.quantity)
-  );
-};
+const calcAdjustedTotalPrice = (data: CartItem, quantity = data.quantity): number =>
+  getDiscountedPrice(data) * quantity;
 
 export type RemoveCartItem = {
   id: number;
@@ -69,7 +59,7 @@ export const cartsSlice = createSlice({
           state.totalPrice + action.payload.price * action.payload.quantity;
         state.adjustedTotalPrice =
           state.adjustedTotalPrice +
-          calcAdjustedTotalPrice(state.totalPrice, action.payload);
+          calcAdjustedTotalPrice(action.payload);
         return;
       }
 
@@ -105,7 +95,7 @@ export const cartsSlice = createSlice({
           state.totalPrice + action.payload.price * action.payload.quantity;
         state.adjustedTotalPrice =
           state.adjustedTotalPrice +
-          calcAdjustedTotalPrice(state.totalPrice, action.payload);
+          calcAdjustedTotalPrice(action.payload);
         return;
       }
 
@@ -118,7 +108,7 @@ export const cartsSlice = createSlice({
         state.totalPrice + action.payload.price * action.payload.quantity;
       state.adjustedTotalPrice =
         state.adjustedTotalPrice +
-        calcAdjustedTotalPrice(state.totalPrice, action.payload);
+        calcAdjustedTotalPrice(action.payload);
     },
     removeCartItem: (state, action: PayloadAction<RemoveCartItem>) => {
       if (state.cart === null) return;
@@ -157,7 +147,7 @@ export const cartsSlice = createSlice({
         state.totalPrice = state.totalPrice - isItemInCart.price * 1;
         state.adjustedTotalPrice =
           state.adjustedTotalPrice -
-          calcAdjustedTotalPrice(isItemInCart.price, isItemInCart, 1);
+          calcAdjustedTotalPrice(isItemInCart, 1);
       }
     },
     remove: (
@@ -188,11 +178,7 @@ export const cartsSlice = createSlice({
         state.totalPrice - isItemInCart.price * isItemInCart.quantity;
       state.adjustedTotalPrice =
         state.adjustedTotalPrice -
-        calcAdjustedTotalPrice(
-          isItemInCart.price,
-          isItemInCart,
-          isItemInCart.quantity
-        );
+        calcAdjustedTotalPrice(isItemInCart, isItemInCart.quantity);
     },
   },
 });
